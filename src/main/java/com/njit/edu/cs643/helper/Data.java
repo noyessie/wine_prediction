@@ -1,5 +1,6 @@
 package com.njit.edu.cs643.helper;
 
+import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -21,6 +22,19 @@ public class Data {
                 .option("header" , true)
                 .csv(path)
                 ;
+
+        // we map the columns name
+        dataset = dataset.select(generateNewColumnName(dataset.columns()));
+
+        // convert in a format usable by the model
+        VectorAssembler featureAssembler = new VectorAssembler()
+                .setInputCols(
+                        Arrays.stream(dataset.columns()).filter(col -> !col.equalsIgnoreCase("quality")) // we remove the column quality
+                                .toArray(size -> new String[size])
+                ).setOutputCol("features");
+
+        dataset = featureAssembler.transform(dataset).withColumnRenamed("quality", "label");
+
         return dataset;
     }
 
@@ -32,7 +46,7 @@ public class Data {
         return getData(spark , "data/validation.csv");
     }
 
-    public static Column[] renameColumns(String[] columns){
+    public static Column[] generateNewColumnName(String[] columns){
         return Arrays.asList(columns).stream()
                 .map(x -> col(x).as(x.replaceAll("\"","")))
                 .toArray(size -> new Column[size]);

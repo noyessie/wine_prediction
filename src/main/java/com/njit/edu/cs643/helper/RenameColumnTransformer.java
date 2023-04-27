@@ -7,7 +7,8 @@ import org.apache.spark.ml.param.Params;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.StructType;
-import static com.njit.edu.cs643.helper.Data.renameColumns;
+
+import static com.njit.edu.cs643.helper.Data.generateNewColumnName;
 
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class RenameColumnTransformer extends Transformer{
 
     @Override
     public Dataset<Row> transform(Dataset<?> dataset) {
-        return dataset.select(renameColumns(dataset.columns()));
+        return dataset.select(generateNewColumnName(dataset.columns()));
     }
 
     @Override

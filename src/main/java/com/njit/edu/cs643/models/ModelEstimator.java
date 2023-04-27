@@ -6,6 +6,6 @@ import org.apache.spark.ml.tuning.CrossValidatorModel;
 
 public interface ModelEstimator {
 
-    public CrossValidator getEstimator();
+    public CrossValidator getEstimator(int folks);
 
 }

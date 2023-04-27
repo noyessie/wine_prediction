@@ -9,11 +9,11 @@ import org.apache.spark.ml.tuning.ParamGridBuilder;
 
 public class MultinomialLogisticRegression implements ModelEstimator {
 
-    private static final int[] maxIters = new int[]{100 , 200 , 500 , 1000};
-    private static final double[] regparams = new double[]{0.01,0.1,0.2,0.3,0.4};
+    private static final int[] maxIters = new int[]{500}; // best value 100. But no much improovement after 500
+    private static final double[] regparams = new double[]{0.01,0};
     private static final double[] elasticNetParams = new double[]{0.1,0.3,0.5,0.9};
     @Override
-    public CrossValidator getEstimator() {
+    public CrossValidator getEstimator(int folks) {
 
         CrossValidator validator = new CrossValidator();
 
@@ -21,7 +21,8 @@ public class MultinomialLogisticRegression implements ModelEstimator {
                 .setMaxIter(10)
                 .setRegParam(0.1)
                 .setElasticNetParam(0.3)
-                .setFamily("multinomial");
+                .setFamily("multinomial")
+                .setWeightCol("weight");
 
         ParamMap[] paramGrid = new ParamGridBuilder()
                 .addGrid(lr.maxIter() , maxIters)
@@ -30,9 +31,9 @@ public class MultinomialLogisticRegression implements ModelEstimator {
                 .build();
 
         return validator.setEstimator(lr)
-                .setEvaluator(new MulticlassClassificationEvaluator())
+                .setEvaluator(new MulticlassClassificationEvaluator().setMetricName("f1"))
                 .setEstimatorParamMaps(paramGrid)
-                .setNumFolds(5)
-                .setParallelism(5);
+                .setNumFolds(folks)
+                .setParallelism(30);
     }
 }
