@@ -1,3 +1,14 @@
+# create aws profile
+aws configure --profile cs643
+
+aws s3api create-bucket \
+--bucket p2-cs643-bucket \
+--region us-east-1
+
+
+s3://p2-cs643-bucket/validation.csv
+s3://p2-cs643-bucket/training.csv
+
 # start my spark cluster
 
 aws ec2 describe-subnets \

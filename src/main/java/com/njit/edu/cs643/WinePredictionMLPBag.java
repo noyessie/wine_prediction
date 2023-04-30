@@ -33,7 +33,7 @@ public class WinePredictionMLPBag {
 
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
-        System.setOut(new PrintStream(new FileOutputStream(new File("console_"+(new Date().getTime())+".log"))));
+        System.setOut(new PrintStream(new FileOutputStream(new File("logs/console_"+(new Date().getTime())+".log"))));
 
 
         Dataset<Row> dataset = Data.getTrainingData(spark);
