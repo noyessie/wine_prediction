@@ -34,9 +34,6 @@ public class WinePrediction {
 
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
-//        System.setOut(new PrintStream(new FileOutputStream(new File("console2.log"))));
-        System.setOut(new PrintStream(new FileOutputStream(new File("console_wp"+(new Date().getTime())+".log"))));
-
         Dataset<Row> dataset = Data.getTrainingData(spark);
         dataset = DataTransform.getScalar().fit(dataset).transform(dataset);
 
@@ -54,27 +51,6 @@ public class WinePrediction {
 
         Dataset<Row> validation = Data.getValidationData(spark);
         validation = DataTransform.getScalar().fit(validation).transform(validation);
-
-        /*dataset.printSchema();
-        Dataset<Row> joinn = dataset.select("label")
-                .withColumn("id",monotonically_increasing_id())
-                    .join(
-                            dataset.select(column("label").as("quality"))
-                                    .withColumn("id" , monotonically_increasing_id()),
-                            "id" , "outer"
-                    ).selectExpr("*", "(label+2*quality)/2 as mean")
-                .selectExpr("*" , "if(id >= quality , label , 0)");
-
-        /*joinn = new VectorAssembler()
-                .setInputCols(new String[]{"id","label","quality"})
-                        .setOutputCol("predictions")
-                                .transform(joinn);
-
-
-        joinn.printSchema();
-        joinn.show(false);
-        System.out.println("count " + dataset.count() + " joiin " + joinn.count());
-                System.exit(1);*/
 
 
         MulticlassClassificationEvaluator f1mesure = new MulticlassClassificationEvaluator()
@@ -119,13 +95,7 @@ public class WinePrediction {
             ((MLWritable)model).save(paths[i]);
         }
 
-
-//        for(int i =0 ; i< 3 ; i++){
-//            Model m = bestModels[i];
-//            System.out.println("Best modef for the classifier " + i + " with a precision of " + f1mesure.evaluate(m.transform(validation)));
-//            System.out.println(m.explainParams());
-//        }
-//
+        
 
         //average the modesl
         Dataset<Row> predictions = bestModels[0].transform(validation).select(column("label") , column("prediction").as("lgr"))

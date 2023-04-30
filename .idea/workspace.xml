@@ -5,20 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e152ff30-52cb-443e-8412-deb9726599f2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/notes.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spark.pem" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/WinePredictionMLPBag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/helper/DataTransform.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/v2/WinePredictionTraining.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notes.md" beforeDir="false" afterPath="$PROJECT_DIR$/notes.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/WinePrediction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/WinePrediction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/data/DataExtractor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/helper/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/helper/Data.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/helper/RenameColumnTransformer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/helper/RenameColumnTransformer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/ModelEstimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/ModelEstimator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/MultiLayerPerceptron.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/MultiLayerPerceptron.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/MultinomialLogisticRegression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/MultinomialLogisticRegression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/NaiveBayesEstimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/NaiveBayesEstimator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/RandomForests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/njit/edu/cs643/models/RandomForests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +58,8 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.editor"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -134,7 +126,9 @@
       <option name="presentableId" value="Default" />
       <updated>1682308968657</updated>
       <workItem from="1682308970823" duration="12677000" />
-      <workItem from="1682373615911" duration="40897000" />
+      <workItem from="1682373615911" duration="41515000" />
+      <workItem from="1682642397416" duration="153000" />
+      <workItem from="1682850273388" duration="1818000" />
     </task>
     <servers />
   </component>
