@@ -2,6 +2,8 @@ package com.njit.edu.cs643.v2.helper;
 
 import org.apache.spark.ml.Transformer;
 import org.apache.spark.ml.param.ParamMap;
+import org.apache.spark.ml.util.DefaultParamsReadable;
+import org.apache.spark.ml.util.DefaultParamsWritable;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.DataType;
@@ -12,12 +14,16 @@ import java.util.UUID;
 
 import static org.apache.spark.sql.functions.count;
 
-public class ColumnWeightTransformer extends Transformer {
+public class ColumnWeightTransformer extends MySuperTransformer {
 
     private String _uuid;
 
     public ColumnWeightTransformer(){
-        this._uuid = UUID.randomUUID().toString();
+        this._uuid = "ColumnWeightTransformer_"+ UUID.randomUUID().toString();
+    }
+
+    public ColumnWeightTransformer(String uuid){
+        this._uuid = uuid;
     }
 
     @Override

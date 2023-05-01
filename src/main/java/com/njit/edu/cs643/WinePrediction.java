@@ -29,8 +29,8 @@ public class WinePrediction {
     public static void main(String[] args) throws IOException {
 
         // configure spark
-        SparkConf conf  = new SparkConf().setAppName("CS 643 Programming Assigment 2")
-                .setMaster("local[*]");
+        SparkConf conf  = new SparkConf().setAppName("CS 643 Programming Assigment 2");
+                //.setMaster("local[*]");
 
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 

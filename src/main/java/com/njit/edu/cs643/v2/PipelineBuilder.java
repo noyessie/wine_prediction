@@ -1,5 +1,9 @@
-package com.njit.edu.cs643.v2.helper;
+package com.njit.edu.cs643.v2;
 
+import com.njit.edu.cs643.v2.helper.ColumnWeightTransformer;
+import com.njit.edu.cs643.v2.helper.MyVectorAssember;
+import com.njit.edu.cs643.v2.helper.PredictionColumnPrefixer;
+import com.njit.edu.cs643.v2.helper.RenameColumnTransformer;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.Transformer;
@@ -57,7 +61,7 @@ public class PipelineBuilder {
                 .addGrid(lr.elasticNetParam() , new double[]{0.1,0.3,0.5,0.9})
                 .build();
         stages.add(lr);
-        stages.add(new PredictionColumnPrefixer("lr_"));
+        stages.add(new PredictionColumnPrefixer().setPrefixCol("lr_"));
 
 
         // Random Forest Classifier
@@ -68,7 +72,7 @@ public class PipelineBuilder {
                 .addGrid(rf.maxDepth() , new int[]{15 , 20, 25, 30})
                 .addGrid(rf.numTrees() , new int[]{20 , 50 , 100 , 250});
         stages.add(rf);
-        stages.add(new PredictionColumnPrefixer("rf_"));
+        stages.add(new PredictionColumnPrefixer().setPrefixCol("rf_"));
 
         //adding MLP prediction
         MultilayerPerceptronClassifier mlp = new MultilayerPerceptronClassifier()
@@ -79,7 +83,7 @@ public class PipelineBuilder {
         builder.addGrid(mlp.maxIter() , new int[]{250,500,1000})
                 .addGrid(mlp.blockSize() , new int[]{100});
         stages.add(mlp);
-        stages.add(new PredictionColumnPrefixer("mlp_"));
+        stages.add(new PredictionColumnPrefixer().setPrefixCol("mlp_"));
 
         //Now we merge the 3 result into one pipeline to see if we can get better result
 

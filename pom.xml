@@ -6,7 +6,7 @@
 
   <groupId>com.njit.edu</groupId>
   <artifactId>wineprediction</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-4</version>
   <build>
     <plugins>
       <plugin>
@@ -31,11 +31,38 @@
   </properties>
 
   <dependencies>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.hadoop</groupId>-->
+<!--      <artifactId>hadoop-client</artifactId>-->
+<!--      <version>${hadoop.version}</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.hadoop</groupId>-->
+<!--      <artifactId>hadoop-aws</artifactId>-->
+<!--      <version>${hadoop.version}</version>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-aws</artifactId>
+      <version>3.0.0</version>
     </dependency>
 
 <!--    spark dependencies -->
@@ -45,6 +72,14 @@
       <artifactId>spark-mllib_2.13</artifactId>
       <version>3.4.0</version>
     </dependency>
+
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.spark/spark-hadoop-cloud &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.spark</groupId>-->
+<!--      <artifactId>spark-hadoop-cloud_2.13</artifactId>-->
+<!--      <version>3.4.0</version>-->
+<!--    </dependency>-->
+
 
   </dependencies>
 

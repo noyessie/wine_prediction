@@ -2,23 +2,28 @@ package com.njit.edu.cs643.v2.helper;
 
 import org.apache.spark.ml.Transformer;
 import org.apache.spark.ml.param.ParamMap;
+import org.apache.spark.ml.util.*;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 
 import static com.njit.edu.cs643.helper.Data.generateNewColumnName;
 
-public class RenameColumnTransformer extends Transformer{
+public class RenameColumnTransformer extends MySuperTransformer{
 
     private String _uuid;
 
     public RenameColumnTransformer(){
-        super();
-        this._uuid = UUID.randomUUID().toString();
+        this._uuid = "RenameColumnTransformer_"+UUID.randomUUID().toString();
+    }
+
+    public RenameColumnTransformer(String uuid){
+        this._uuid = uuid;
     }
 
     @Override
@@ -39,6 +44,7 @@ public class RenameColumnTransformer extends Transformer{
         return new StructType(fields);
     }
 
+
     @Override
     public Transformer copy(ParamMap extra) {
         return defaultCopy(extra);
@@ -48,4 +54,6 @@ public class RenameColumnTransformer extends Transformer{
     public String uid() {
         return this._uuid;
     }
+
+
 }
