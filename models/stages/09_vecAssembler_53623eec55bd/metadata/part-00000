@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1682979586194,"sparkVersion":"2.4.4","uid":"vecAssembler_53623eec55bd","paramMap":{"outputCol":"composite_feature","inputCols":["lr_prediction","rf_prediction","mlp_prediction"]},"defaultParamMap":{"handleInvalid":"error","outputCol":"vecAssembler_53623eec55bd__output"}}
