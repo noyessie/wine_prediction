@@ -34,7 +34,8 @@ aws emr create-cluster --name "Training Cluster" \
 --log-uri s3://myBucket/myLog \
 --ec2-attributes SubnetId=subnet-025c1de09afa7571b \
 --instance-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m5.xlarge InstanceGroupType=CORE,InstanceCount=2,InstanceType=m5.xlarge \
---steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionTraining","s3://p2-cs643-bucket/wineprediction-1.0-4.jar","s3://p2-cs643-bucket/hubert/training.csv","s3://p2-cs643-bucket/hubert/output","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Spark application"}]'
+--steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionTraining","s3://p2-cs643-bucket/wineprediction-1.0-4.jar","s3://p2-cs643-bucket/hubert/training.csv","s3://p2-cs643-bucket/hubert/output","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Training"}, {"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionTraining","s3://p2-cs643-bucket/wineprediction-1.0-4.jar","s3://p2-cs643-bucket/hubert/training.csv","s3://p2-cs643-bucket/hubert/output","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Training"}]'
+--auto-terminate
 
 
 
@@ -78,7 +79,7 @@ s3://p2-cs643-bucket/hubert/output
 
 # TODO
 
- - A link to your code in GitHub. The code includes the code for parallel model training and the code  for prediction application.
+ - A link to your code in GitHub. The code includes the code for parallel model training and the code  for prediction application. ( done)
  - A link to your container in Docker Hub.
  - describe step-by-step how to setup the cloud environment
  - describe how to run the model training
@@ -107,6 +108,18 @@ aws emr create-cluster --name "Training Cluster" \
 --steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionTraining","s3://p2-cs643-bucket/wineprediction-1.0-4.jar","s3://p2-cs643-bucket/hubert/training.csv","s3://p2-cs643-bucket/hubert/output","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Spark application"}]'
 
 
+aws emr create-cluster --name "Hubert Cluster" \
+--applications Name=Spark \
+--use-default-roles \
+--release-label emr-6.0.0 \
+--ec2-attributes KeyName=spark \
+--log-uri s3://p2-cs643-bucket/logs/  \
+--ec2-attributes SubnetId=subnet-025c1de09afa7571b \
+--instance-groups InstanceGroupType=MASTER,InstanceCount=1,InstanceType=m5.xlarge InstanceGroupType=CORE,InstanceCount=4,InstanceType=m5.xlarge \
+--steps '[{"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionTraining","s3://p2-cs643-bucket/jars/wineprediction-1.0-7.jar","s3://p2-cs643-bucket/hubert/training.csv","s3://p2-cs643-bucket/hubert/output","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CANCEL_AND_WAIT","Jar":"command-runner.jar","Properties":"","Name":"Training"}, {"Args":["spark-submit","--deploy-mode","cluster","--class","com.njit.edu.cs643.v2.WinePredictionValidation","s3://p2-cs643-bucket/jars/wineprediction-1.0-7.jar","s3://p2-cs643-bucket/hubert/output/models","s3://p2-cs643-bucket/hubert/validation.csv","s3://p2-cs643-bucket/hubert/validation","5"],"Type":"CUSTOM_JAR","ActionOnFailure":"CONTINUE","Jar":"command-runner.jar","Properties":"","Name":"Prediction"}]' \
+--auto-terminate
+
+
 spark-submit --deploy-mode cluster --deploy-mode cluster --master yarn --class com.njit.edu.cs643.v2.WinePredictionTraining s3://p2-cs643-bucket/jars/wineprediction-1.0-2.jar s3://p2-cs643-bucket/hubert/training.csv s3://p2-cs643-bucket/hubert/output
 
 spark-submit --deploy-mode cluster --deploy-mode cluster --master yarn --class com.njit.edu.cs643.v2.WinePredictionTraining s3://p2-cs643-bucket/jars/wineprediction-1.0-2.jar s3://p2-cs643-bucket/hubert/training.csv s3://p2-cs643-bucket/hubert/output
@@ -115,3 +128,23 @@ spark-submit --deploy-mode cluster --deploy-mode cluster --master yarn --class c
 spark-submit --deploy-mode cluster --deploy-mode cluster --master yarn --class com.njit.edu.cs643.v2.WinePredictionValidation s3://p2-cs643-bucket/jars/wineprediction-1.0-3.jar s3://p2-cs643-bucket/hubert/output/models s3://p2-cs643-bucket/hubert/validation.csv s3://p2-cs643-bucket/hubert/validation
 
 spark-submit --deploy-mode cluster --deploy-mode cluster --master yarn --class com.njit.edu.cs643.v2.WinePredictionValidation s3://p2-cs643-bucket/jars/wineprediction-1.0-3.jar s3://p2-cs643-bucket/hubert/output/models s3://p2-cs643-bucket/hubert/validation.csv s3://p2-cs643-bucket/hubert/validation
+
+
+
+
+spark-submit --deploy-mode local  --class com.njit.edu.cs643.v2.WinePredictionTraining /opt/wineprediction-1.0-3.jar /opt/training.csv /opt/output
+
+
+
+--deploy-mode client  --class com.njit.edu.cs643.v2.WinePredictionValidation /opt/spark/work-dir/wineprediction-1.0-4.jar /opt/spark/work-dir/models /opt/spark/work-dir/data/training.csv /opt/spark/work-dir/data/output
+
+```bash
+./spark-submit --deploy-mode client  --class com.njit.edu.cs643.v2.WinePredictionValidation <path to the jar>/wineprediction-1.0-5.jar <path to model>/models <path to data to evaluate>/data/training.csv <output folder>/output
+```
+
+
+```bash
+docker run -it -v $(pwd)/data:/opt/spark/work-dir/data ml:test
+```
+
+docker run -it -v $(pwd)/data:/opt/spark/work-dir/data hubertnoyessie/cs643:1.4

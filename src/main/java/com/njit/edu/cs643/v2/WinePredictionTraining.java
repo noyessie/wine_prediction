@@ -5,6 +5,8 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
+import org.apache.spark.ml.tuning.CrossValidator;
+import org.apache.spark.ml.tuning.CrossValidatorModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -33,11 +35,6 @@ public class WinePredictionTraining {
 
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
 
-        spark.sparkContext().hadoopConfiguration().set("fs.s3n.awsAccessKeyId", "awsAccessKeyId value");
-        spark.sparkContext().hadoopConfiguration().set("fs.s3n.awsSecretAccessKey", "awsSecretAccessKey value");
-        spark.sparkContext().hadoopConfiguration().set("fs.s3n.endpoint", "s3.amazonaws.com");
-        spark.sparkContext().hadoopConfiguration().set("spark.hadoop.fs.s3a.impl","org.apache.hadoop.fs.s3a.S3AFileSystem");
-
 
         //System.setOut(new PrintStream(new FileOutputStream(new File("logs/console_"+(new Date().getTime())+".log"))));
         //FileWriter writer = new FileWriter(new File("output.txt"));
@@ -59,23 +56,30 @@ public class WinePredictionTraining {
                 .setLabelCol("quality");
 
 
-        Pipeline pipeline = new PipelineBuilder().getPipeline();
-        PipelineModel model = pipeline.fit(dataset);
+        PipelineBuilder b = new PipelineBuilder();
+        Pipeline pipeline = b.getPipeline();
+
+        CrossValidator validator = new CrossValidator();
+
+        validator.setEstimator(pipeline)
+                .setEvaluator(f1mesure)
+                .setEstimatorParamMaps(b.getParams())
+                .setNumFolds(4) // some class have 9 items. so too much folk is not good.
+                .setParallelism(250);
+
+        System.out.println("params map validator size "+ validator.getEstimatorParamMaps().length);
+
+        CrossValidatorModel model = validator.fit(dataset);
+//
+//        PipelineModel model = pipeline.fit(dataset);
         Dataset<Row> result = model.transform(dataset);
         result.show(false);
 
-        /*double lr_p = f1mesure.setPredictionCol("lr_prediction").evaluate(result);
-        double rf_p = f1mesure.setPredictionCol("rf_prediction").evaluate(result);
-        double mlp_p = f1mesure.setPredictionCol("mlp_prediction").evaluate(result);
 
-        writer.write("F1-measure for Logistic Regression on the training set : "+lr_p+" \n");
-        writer.write("F1-measure for Random Forest on the training set : "+rf_p+" \n");
-        writer.write("F1-measure for MultiLayer classifier on the training set: "+mlp_p+" \n");
-        writer.close();
-        System.out.println(lr_p + " --- " +rf_p +" --- "+ mlp_p);*/
+        PipelineModel bestM = (PipelineModel) model.bestModel();
 
-        model.write().overwrite().save(outputFolder+"/models");
-        model.write().overwrite().save(outputFolder+"/models_"+Utils.getTimestamp());
+        bestM.write().overwrite().save(outputFolder+"/models");
+        bestM.write().overwrite().save(outputFolder+"/models_"+Utils.getTimestamp());
 
     }
 }

@@ -30,7 +30,6 @@ public class MyVectorAssember extends MySuperTransformer {
     }
 
     public Dataset<Row> transform(final Dataset<?> dataset){
-        dataset.printSchema();
         vectorAssembler = new VectorAssembler()
                 .setInputCols(dataset.drop("quality").columns())
                 .setOutputCol("features");

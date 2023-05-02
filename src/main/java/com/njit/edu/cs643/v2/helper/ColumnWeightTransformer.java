@@ -28,15 +28,10 @@ public class ColumnWeightTransformer extends MySuperTransformer {
 
     @Override
     public Dataset<Row> transform(Dataset<?> dataset) {
-        dataset.printSchema();
         Dataset<Row> weights = dataset.groupBy("quality")
                 .agg(count("quality").as("total"))
                 .selectExpr("*" , "1- (total / "+dataset.count()+") as weight")
                 .select("quality","weight");
-
-        System.out.println(dataset.count());
-
-        weights.show();
 
         return dataset.join(weights , "quality");
     }
